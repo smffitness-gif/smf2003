@@ -42,8 +42,12 @@ body {
 
 /* Product Cards */
 .grid {
-    grid-template-columns: repeat(4, 1fr);
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* desktop 5 columns */
+    gap: 15px;
+    padding: 20px;
 }
+
 
 .product-card {
     background: #1a1a1a;
@@ -110,7 +114,16 @@ body {
     background: #00c853;
 }
 
-/* Responsive */
+/* Mobile landscape */
 @media (max-width: 768px) {
-    /* mobile layout styles */
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
 }
