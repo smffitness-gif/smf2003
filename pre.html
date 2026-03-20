@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <h2>Pre Workout</h2>
+  </nav>
+
+  <div id="grid" class="grid"></div>
+
+  <div id="detail" class="product-detail" style="display:none;">
+    <img id="pimg">
+    <h3 id="pname"></h3>
+    <p id="pprice"></p>
+    <ul id="pdesc"></ul>
+    <button onclick="showOrder()">Order</button>
+    <button onclick="backToGrid()">⬅ Back</button>
+  </div>
+
+  <div id="order" class="product-detail" style="display:none;">
+    <h3>Order Form</h3>
+    <img id="oimg">
+    <h4 id="oname"></h4>
+    <p id="oprice"></p>
+    <input id="name" placeholder="Name">
+    <input id="phone" placeholder="Phone">
+    <input id="email" placeholder="Email">
+    <button onclick="orderNow()">Submit</button>
+    <button onclick="backToDetail()">⬅ Back</button>
+  </div>
+
+  <script>
+    const products = [
+      { name: "Pre 1", price: 1200, img: "img/pre1.jpg", desc: ["Energy boost", "Focus", "Endurance"] },
+      { name: "Pre 2", price: 1300, img: "img/pre2.jpg", desc: ["Pump effect", "Explosive power", "Fast acting"] },
+      { name: "Pre 3", price: 1400, img: "img/pre3.jpg", desc: ["Stamina", "Muscle support", "Tasty"] },
+      { name: "Pre 4", price: 1500, img: "img/pre4.jpg", desc: ["Strength", "Endurance", "Recovery"] },
+      { name: "Pre 5", price: 1600, img: "img/pre5.jpg", desc: ["Energy boost", "Focus", "Pump"] },
+      { name: "Pre 6", price: 1700, img: "img/pre6.jpg", desc: ["Explosive power", "Strength", "Recovery"] },
+      { name: "Pre 7", price: 1800, img: "img/pre7.jpg", desc: ["Muscle support", "Fast acting", "Energy"] },
+      { name: "Pre 8", price: 1900, img: "img/pre8.jpg", desc: ["Endurance", "Focus", "Premium"] },
+      { name: "Pre 9", price: 2000, img: "img/pre9.jpg", desc: ["Strength", "Muscle energy", "Recovery"] },
+      { name: "Pre 10", price: 2100, img: "img/pre10.jpg", desc: ["Pump effect", "Fast absorption", "Energy"] },
+      { name: "Pre 11", price: 2200, img: "img/pre11.jpg", desc: ["Energy boost", "Stamina", "Tasty"] },
+      { name: "Pre 12", price: 2300, img: "img/pre12.jpg", desc: ["Muscle support", "Strength", "Focus"] },
+      { name: "Pre 13", price: 2400, img: "img/pre13.jpg", desc: ["Recovery", "Energy", "Endurance"] },
+      { name: "Pre 14", price: 2500, img: "img/pre14.jpg", desc: ["Fast acting", "Pump effect", "Premium"] },
+      { name: "Pre 15", price: 2600, img: "img/pre15.jpg", desc: ["Strength", "Energy", "Muscle support"] },
+      { name: "Pre 16", price: 2700, img: "img/pre16.jpg", desc: ["Stamina", "Recovery", "Focus"] },
+      { name: "Pre 17", price: 2800, img: "img/pre17.jpg", desc: ["Endurance", "Energy boost", "Pump"] },
+      { name: "Pre 18", price: 2900, img: "img/pre18.jpg", desc: ["Muscle support", "Strength", "Premium"] },
+      { name: "Pre 19", price: 3000, img: "img/pre19.jpg", desc: ["Focus", "Recovery", "Energy"] },
+      { name: "Pre 20", price: 3100, img: "img/pre20.jpg", desc: ["Pump effect", "Endurance", "Fast acting"] }
+    ];
+
+    const grid = document.getElementById("grid");
+    products.forEach((p, i) => {
+      const div = document.createElement("div");
+      div.className = "product-card";
+      div.innerHTML = `<img src="${p.img}" alt="${p.name}"><h4>${p.name}</h4><p>₹${p.price}</p>`;
+      div.onclick = () => showDetail(i);
+      grid.appendChild(div);
+    });
+
+    let currentProduct = null;
+    function showDetail(i) {
+      currentProduct = products[i];
+      document.getElementById("pimg").src = currentProduct.img;
+      document.getElementById("pname").innerText = currentProduct.name;
+      document.getElementById("pprice").innerText = "₹" + currentProduct.price;
+      const ul = document.getElementById("pdesc");
+      ul.innerHTML = "";
+      currentProduct.desc.forEach(d => { const li = document.createElement("li"); li.innerText = d; ul.appendChild(li); });
+      grid.style.display = "none";
+      document.getElementById("detail").style.display = "block";
+    }
+    function backToGrid() { document.getElementById("detail").style.display = "none"; grid.style.display = "grid"; }
+    function showOrder() {
+      document.getElementById("oimg").src = currentProduct.img;
+      document.getElementById("oname").innerText = currentProduct.name;
+      document.getElementById("oprice").innerText = "₹" + currentProduct.price;
+      document.getElementById("detail").style.display = "none";
+      document.getElementById("order").style.display = "block";
+    }
+    function backToDetail() { document.getElementById("order").style.display = "none"; document.getElementById("detail").style.display = "block"; }
+    function orderNow() {
+      const name = encodeURIComponent(document.getElementById("name").value.trim());
+      const phone = encodeURIComponent(document.getElementById("phone").value.trim());
+      const email = encodeURIComponent(document.getElementById("email").value.trim());
+      if (!name || !phone || !email) { alert("Please fill all fields!"); return; }
+      const msg = `Order:%0AProduct: ${encodeURIComponent(currentProduct.name)}%0APrice: ₹${currentProduct.price}%0AName: ${name}%0APhone: ${phone}%0AEmail: ${email}`;
+      window.open(`https://api.whatsapp.com/send?phone=917339563621&text=${msg}`, "_blank");
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1024, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <h2>Mass Gainer</h2>
+  </nav>
+
+  <div id="grid" class="grid"></div>
+
+  <div id="detail" class="product-detail" style="display:none;">
+    <img id="pimg">
+    <h3 id="pname"></h3>
+    <p id="pprice"></p>
+    <ul id="pdesc"></ul>
+    <button onclick="showOrder()">Order</button>
+    <button onclick="backToGrid()">⬅ Back</button>
+  </div>
+
+  <div id="order" class="product-detail" style="display:none;">
+    <h3>Order Form</h3>
+    <img id="oimg">
+    <h4 id="oname"></h4>
+    <p id="oprice"></p>
+    <input id="name" placeholder="Name">
+    <input id="phone" placeholder="Phone">
+    <input id="email" placeholder="Email">
+    <button onclick="orderNow()">Submit</button>
+    <button onclick="backToDetail()">⬅ Back</button>
+  </div>
+
+  <script>
+    const products = [
+      { name: "Gainer 1", price: 1500, img: "img/gainer1.jpg", desc: ["Muscle mass", "Weight gain", "High calories"] },
+      { name: "Gainer 2", price: 1600, img: "img/gainer2.jpg", desc: ["Protein rich", "Energy", "Recovery"] },
+      { name: "Gainer 3", price: 1700, img: "img/gainer3.jpg", desc: ["Mass builder", "Strength", "Muscle support"] },
+      { name: "Gainer 4", price: 1800, img: "img/gainer4.jpg", desc: ["Endurance", "Energy", "Fast absorption"] },
+      { name: "Gainer 5", price: 1900, img: "img/gainer5.jpg", desc: ["Premium", "Muscle growth", "Pump"] },
+      { name: "Gainer 6", price: 2000, img: "img/gainer6.jpg", desc: ["Recovery", "Strength", "Energy"] },
+      { name: "Gainer 7", price: 2100, img: "img/gainer7.jpg", desc: ["High quality", "Muscle support", "Endurance"] },
+      { name: "Gainer 8", price: 2200, img: "img/gainer8.jpg", desc: ["Mass gain", "Pump", "Energy boost"] },
+      { name: "Gainer 9", price: 2300, img: "img/gainer9.jpg", desc: ["Strength", "Recovery", "Focus"] },
+      { name: "Gainer 10", price: 2400, img: "img/gainer10.jpg", desc: ["Fast acting", "Muscle growth", "Energy"] },
+      { name: "Gainer 11", price: 2500, img: "img/gainer11.jpg", desc: ["Premium", "Mass builder", "Pump"] },
+      { name: "Gainer 12", price: 2600, img: "img/gainer12.jpg", desc: ["Recovery", "Endurance", "Strength"] },
+      { name: "Gainer 13", price: 2700, img: "img/gainer13.jpg", desc: ["Energy boost", "Muscle support", "High calories"] },
+      { name: "Gainer 14", price: 2800, img: "img/gainer14.jpg", desc: ["Pump effect", "Strength", "Recovery"] },
+      { name: "Gainer 15", price: 2900, img: "img/gainer15.jpg", desc: ["Mass gain", "Energy", "Premium"] },
+      { name: "Gainer 16", price: 3000, img: "img/gainer16.jpg", desc: ["Strength", "Recovery", "Muscle growth"] },
+      { name: "Gainer 17", price: 3100, img: "img/gainer17.jpg", desc: ["Fast absorption", "Energy boost", "Pump"] },
+      { name: "Gainer 18", price: 3200, img: "img/gainer18.jpg", desc: ["Premium", "Muscle support", "Endurance"] },
+      { name: "Gainer 19", price: 3300, img: "img/gainer19.jpg", desc: ["Recovery", "Strength", "Energy"] },
+      { name: "Gainer 20", price: 3400, img: "img/gainer20.jpg", desc: ["Mass builder", "Focus", "High quality"] }
+    ];
+
+    const grid = document.getElementById("grid");
+    products.forEach((p, i) => {
+      const div = document.createElement("div");
+      div.className = "product-card";
+      div.innerHTML = `<img src="${p.img}" alt="${p.name}"><h4>${p.name}</h4><p>₹${p.price}</p>`;
+      div.onclick = () => showDetail(i);
+      grid.appendChild(div);
+    });
+
+    let currentProduct = null;
+    function showDetail(i) {
+      currentProduct = products[i];
+      document.getElementById("pimg").src = currentProduct.img;
+      document.getElementById("pname").innerText = currentProduct.name;
+      document.getElementById("pprice").innerText = "₹" + currentProduct.price;
+      const ul = document.getElementById("pdesc");
+      ul.innerHTML = "";
+      currentProduct.desc.forEach(d => { const li = document.createElement("li"); li.innerText = d; ul.appendChild(li); });
+      grid.style.display = "none";
+      document.getElementById("detail").style.display = "block";
+    }
+    function backToGrid() { document.getElementById("detail").style.display = "none"; grid.style.display = "grid"; }
+    function showOrder() {
+      document.getElementById("oimg").src = currentProduct.img;
+      document.getElementById("oname").innerText = currentProduct.name;
+      document.getElementById("oprice").innerText = "₹" + currentProduct.price;
+      document.getElementById("detail").style.display = "none";
+      document.getElementById("order").style.display = "block";
+    }
+    function backToDetail() { document.getElementById("order").style.display = "none"; document.getElementById("detail").style.display = "block"; }
+    function orderNow() {
+      const name = encodeURIComponent(document.getElementById("name").value.trim());
+      const phone = encodeURIComponent(document.getElementById("phone").value.trim());
+      const email = encodeURIComponent(document.getElementById("email").value.trim());
+      if (!name || !phone || !email) { alert("Please fill all fields!"); return; }
+      const msg = `Order:%0AProduct: ${encodeURIComponent(currentProduct.name)}%0APrice: ₹${currentProduct.price}%0AName: ${name}%0APhone: ${phone}%0AEmail: ${email}`;
+      window.open(`https://api.whatsapp.com/send?phone=917339563621&text=${msg}`, "_blank");
+    }
+  </script>
+</body>
+
+</html>

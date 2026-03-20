@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <h2>BCAA</h2>
+  </nav>
+
+  <div id="grid" class="grid"></div>
+
+  <div id="detail" class="product-detail" style="display:none;">
+    <img id="pimg">
+    <h3 id="pname"></h3>
+    <p id="pprice"></p>
+    <ul id="pdesc"></ul>
+    <button onclick="showOrder()">Order</button>
+    <button onclick="backToGrid()">⬅ Back</button>
+  </div>
+
+  <div id="order" class="product-detail" style="display:none;">
+    <h3>Order Form</h3>
+    <img id="oimg">
+    <h4 id="oname"></h4>
+    <p id="oprice"></p>
+    <input id="name" placeholder="Name">
+    <input id="phone" placeholder="Phone">
+    <input id="email" placeholder="Email">
+    <button onclick="orderNow()">Submit</button>
+    <button onclick="backToDetail()">⬅ Back</button>
+  </div>
+
+  <script>
+    const products = [
+      { name: "BCAA 1", price: 900, img: "img/bcaa1.jpg", desc: ["Muscle recovery", "Reduce fatigue", "Amino acids"] },
+      { name: "BCAA 2", price: 1000, img: "img/bcaa2.jpg", desc: ["Hydration", "Strength", "Muscle support"] },
+      { name: "BCAA 3", price: 1100, img: "img/bcaa3.jpg", desc: ["Energy", "Recovery", "Focus"] },
+      { name: "BCAA 4", price: 1200, img: "img/bcaa4.jpg", desc: ["Muscle growth", "Endurance", "Pump"] },
+      { name: "BCAA 5", price: 1300, img: "img/bcaa5.jpg", desc: ["Fast absorption", "Strength", "Recovery"] },
+      { name: "BCAA 6", price: 1400, img: "img/bcaa6.jpg", desc: ["Premium quality", "Energy", "Muscle support"] },
+      { name: "BCAA 7", price: 1500, img: "img/bcaa7.jpg", desc: ["Boost performance", "Recovery", "Strength"] },
+      { name: "BCAA 8", price: 1600, img: "img/bcaa8.jpg", desc: ["Endurance", "Energy", "Pump"] },
+      { name: "BCAA 9", price: 1700, img: "img/bcaa9.jpg", desc: ["Muscle support", "Focus", "Strength"] },
+      { name: "BCAA 10", price: 1800, img: "img/bcaa10.jpg", desc: ["Recovery", "Energy", "Premium"] },
+      { name: "BCAA 11", price: 1900, img: "img/bcaa11.jpg", desc: ["Muscle growth", "Strength", "Fast absorption"] },
+      { name: "BCAA 12", price: 2000, img: "img/bcaa12.jpg", desc: ["Endurance", "Pump effect", "Recovery"] },
+      { name: "BCAA 13", price: 2100, img: "img/bcaa13.jpg", desc: ["Energy boost", "Strength", "Focus"] },
+      { name: "BCAA 14", price: 2200, img: "img/bcaa14.jpg", desc: ["Muscle support", "Performance", "Premium"] },
+      { name: "BCAA 15", price: 2300, img: "img/bcaa15.jpg", desc: ["Recovery", "Strength", "Energy"] },
+      { name: "BCAA 16", price: 2400, img: "img/bcaa16.jpg", desc: ["Fast absorption", "Pump", "Muscle support"] },
+      { name: "BCAA 17", price: 2500, img: "img/bcaa17.jpg", desc: ["Energy", "Focus", "Recovery"] },
+      { name: "BCAA 18", price: 2600, img: "img/bcaa18.jpg", desc: ["Strength", "Endurance", "Pump"] },
+      { name: "BCAA 19", price: 2700, img: "img/bcaa19.jpg", desc: ["Premium quality", "Recovery", "Energy"] },
+      { name: "BCAA 20", price: 2800, img: "img/bcaa20.jpg", desc: ["Muscle growth", "Strength", "Focus"] }
+    ];
+
+    // Render grid
+    const grid = document.getElementById("grid");
+    products.forEach((p, i) => {
+      const div = document.createElement("div");
+      div.className = "product-card";
+      div.innerHTML = `<img src="${p.img}" alt="${p.name}"><h4>${p.name}</h4><p>₹${p.price}</p>`;
+      div.onclick = () => showDetail(i);
+      grid.appendChild(div);
+    });
+
+    let currentProduct = null;
+    function showDetail(i) {
+      currentProduct = products[i];
+      document.getElementById("pimg").src = currentProduct.img;
+      document.getElementById("pname").innerText = currentProduct.name;
+      document.getElementById("pprice").innerText = "₹" + currentProduct.price;
+      const ul = document.getElementById("pdesc");
+      ul.innerHTML = "";
+      currentProduct.desc.forEach(d => { const li = document.createElement("li"); li.innerText = d; ul.appendChild(li); });
+      grid.style.display = "none";
+      document.getElementById("detail").style.display = "block";
+    }
+    function backToGrid() { document.getElementById("detail").style.display = "none"; grid.style.display = "grid"; }
+    function showOrder() {
+      document.getElementById("oimg").src = currentProduct.img;
+      document.getElementById("oname").innerText = currentProduct.name;
+      document.getElementById("oprice").innerText = "₹" + currentProduct.price;
+      document.getElementById("detail").style.display = "none";
+      document.getElementById("order").style.display = "block";
+    }
+    function backToDetail() { document.getElementById("order").style.display = "none"; document.getElementById("detail").style.display = "block"; }
+    function orderNow() {
+      const name = encodeURIComponent(document.getElementById("name").value.trim());
+      const phone = encodeURIComponent(document.getElementById("phone").value.trim());
+      const email = encodeURIComponent(document.getElementById("email").value.trim());
+      if (!name || !phone || !email) { alert("Please fill all fields!"); return; }
+      const msg = `Order:%0AProduct: ${encodeURIComponent(currentProduct.name)}%0APrice: ₹${currentProduct.price}%0AName: ${name}%0APhone: ${phone}%0AEmail: ${email}`;
+      window.open(`https://api.whatsapp.com/send?phone=917339563621&text=${msg}`, "_blank");
+    }
+  </script>
+</body>
+
+</html>

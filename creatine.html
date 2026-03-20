@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <h2>Creatine</h2>
+  </nav>
+
+  <div id="grid" class="grid"></div>
+
+  <div id="detail" class="product-detail" style="display:none;">
+    <img id="pimg">
+    <h3 id="pname"></h3>
+    <p id="pprice"></p>
+    <ul id="pdesc"></ul>
+    <button onclick="showOrder()">Order</button>
+    <button onclick="backToGrid()">⬅ Back</button>
+  </div>
+
+  <div id="order" class="product-detail" style="display:none;">
+    <h3>Order Form</h3>
+    <img id="oimg">
+    <h4 id="oname"></h4>
+    <p id="oprice"></p>
+    <input id="name" placeholder="Name">
+    <input id="phone" placeholder="Phone">
+    <input id="email" placeholder="Email">
+    <button onclick="orderNow()">Submit</button>
+    <button onclick="backToDetail()">⬅ Back</button>
+  </div>
+
+  <script>
+    const products = [
+      { name: "Creatine 1", price: 1000, img: "img/creatine1.jpg", desc: ["Supports strength", "Muscle energy", "Quality"] },
+      { name: "Creatine 2", price: 1100, img: "img/creatine2.jpg", desc: ["Improves performance", "Boosts power", "Fast absorption"] },
+      { name: "Creatine 3", price: 1200, img: "img/creatine3.jpg", desc: ["Muscle recovery", "Strength", "Premium"] },
+      { name: "Creatine 4", price: 1300, img: "img/creatine4.jpg", desc: ["Energy boost", "Muscle support", "Tasty"] },
+      { name: "Creatine 5", price: 1400, img: "img/creatine5.jpg", desc: ["High quality", "Endurance", "Strength"] },
+      { name: "Creatine 6", price: 1500, img: "img/creatine6.jpg", desc: ["Fast absorption", "Muscle energy", "Performance"] },
+      { name: "Creatine 7", price: 1600, img: "img/creatine7.jpg", desc: ["Premium", "Recovery", "Boost"] },
+      { name: "Creatine 8", price: 1700, img: "img/creatine8.jpg", desc: ["Strength", "Energy", "Muscle"] },
+      { name: "Creatine 9", price: 1800, img: "img/creatine9.jpg", desc: ["Quality", "Endurance", "Power"] },
+      { name: "Creatine 10", price: 1900, img: "img/creatine10.jpg", desc: ["Recovery", "Muscle growth", "Fast absorption"] },
+      { name: "Creatine 11", price: 2000, img: "img/creatine11.jpg", desc: ["Energy boost", "Strength", "Premium"] },
+      { name: "Creatine 12", price: 2100, img: "img/creatine12.jpg", desc: ["Muscle support", "High quality", "Performance"] },
+      { name: "Creatine 13", price: 2200, img: "img/creatine13.jpg", desc: ["Fast absorption", "Recovery", "Strength"] },
+      { name: "Creatine 14", price: 2300, img: "img/creatine14.jpg", desc: ["Endurance", "Muscle energy", "Premium"] },
+      { name: "Creatine 15", price: 2400, img: "img/creatine15.jpg", desc: ["Quality", "Energy", "Muscle support"] },
+      { name: "Creatine 16", price: 2500, img: "img/creatine16.jpg", desc: ["Strength", "Recovery", "Boost"] },
+      { name: "Creatine 17", price: 2600, img: "img/creatine17.jpg", desc: ["Muscle growth", "High quality", "Energy"] },
+      { name: "Creatine 18", price: 2700, img: "img/creatine18.jpg", desc: ["Performance", "Endurance", "Premium"] },
+      { name: "Creatine 19", price: 2800, img: "img/creatine19.jpg", desc: ["Recovery", "Strength", "Muscle"] },
+      { name: "Creatine 20", price: 2900, img: "img/creatine20.jpg", desc: ["Fast absorption", "Energy", "High quality"] }
+    ];
+
+    // Render grid
+    const grid = document.getElementById("grid");
+    products.forEach((p, i) => {
+      const div = document.createElement("div");
+      div.className = "product-card";
+      div.innerHTML = `<img src="${p.img}" alt="${p.name}"><h4>${p.name}</h4><p>₹${p.price}</p>`;
+      div.onclick = () => showDetail(i);
+      grid.appendChild(div);
+    });
+
+    let currentProduct = null;
+    function showDetail(i) {
+      currentProduct = products[i];
+      document.getElementById("pimg").src = currentProduct.img;
+      document.getElementById("pname").innerText = currentProduct.name;
+      document.getElementById("pprice").innerText = "₹" + currentProduct.price;
+      const ul = document.getElementById("pdesc");
+      ul.innerHTML = "";
+      currentProduct.desc.forEach(d => { const li = document.createElement("li"); li.innerText = d; ul.appendChild(li); });
+      grid.style.display = "none";
+      document.getElementById("detail").style.display = "block";
+    }
+    function backToGrid() { document.getElementById("detail").style.display = "none"; grid.style.display = "grid"; }
+    function showOrder() {
+      document.getElementById("oimg").src = currentProduct.img;
+      document.getElementById("oname").innerText = currentProduct.name;
+      document.getElementById("oprice").innerText = "₹" + currentProduct.price;
+      document.getElementById("detail").style.display = "none";
+      document.getElementById("order").style.display = "block";
+    }
+    function backToDetail() { document.getElementById("order").style.display = "none"; document.getElementById("detail").style.display = "block"; }
+    function orderNow() {
+      const name = encodeURIComponent(document.getElementById("name").value.trim());
+      const phone = encodeURIComponent(document.getElementById("phone").value.trim());
+      const email = encodeURIComponent(document.getElementById("email").value.trim());
+      if (!name || !phone || !email) { alert("Please fill all fields!"); return; }
+      const msg = `Order:%0AProduct: ${encodeURIComponent(currentProduct.name)}%0APrice: ₹${currentProduct.price}%0AName: ${name}%0APhone: ${phone}%0AEmail: ${email}`;
+      window.open(`https://api.whatsapp.com/send?phone=917339563621&text=${msg}`, "_blank");
+    }
+  </script>
+</body>
+
+</html>

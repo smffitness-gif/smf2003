@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+    <meta name="viewport" content="width=1024, initial-scale=1.0">
+    <title>Document</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <h2>EAA</h2>
+  </nav>
+
+  <div id="grid" class="grid"></div>
+
+  <div id="detail" class="product-detail" style="display:none;">
+    <img id="pimg">
+    <h3 id="pname"></h3>
+    <p id="pprice"></p>
+    <ul id="pdesc"></ul>
+    <button onclick="showOrder()">Order</button>
+    <button onclick="backToGrid()">⬅ Back</button>
+  </div>
+
+  <div id="order" class="product-detail" style="display:none;">
+    <h3>Order Form</h3>
+    <img id="oimg">
+    <h4 id="oname"></h4>
+    <p id="oprice"></p>
+    <input id="name" placeholder="Name">
+    <input id="phone" placeholder="Phone">
+    <input id="email" placeholder="Email">
+    <button onclick="orderNow()">Submit</button>
+    <button onclick="backToDetail()">⬅ Back</button>
+  </div>
+
+  <script>
+    const products = [
+      { name: "EAA 1", price: 950, img: "img/eaa1.jpg", desc: ["Muscle recovery", "Amino acids", "Energy"] },
+      { name: "EAA 2", price: 1050, img: "img/eaa2.jpg", desc: ["Strength", "Endurance", "Recovery"] },
+      { name: "EAA 3", price: 1150, img: "img/eaa3.jpg", desc: ["Muscle support", "Energy", "Focus"] },
+      { name: "EAA 4", price: 1250, img: "img/eaa4.jpg", desc: ["Fast absorption", "Pump", "Recovery"] },
+      { name: "EAA 5", price: 1350, img: "img/eaa5.jpg", desc: ["Premium", "Energy boost", "Strength"] },
+      { name: "EAA 6", price: 1450, img: "img/eaa6.jpg", desc: ["Endurance", "Recovery", "Muscle support"] },
+      { name: "EAA 7", price: 1550, img: "img/eaa7.jpg", desc: ["Strength", "Energy", "Focus"] },
+      { name: "EAA 8", price: 1650, img: "img/eaa8.jpg", desc: ["Muscle growth", "Pump", "Premium"] },
+      { name: "EAA 9", price: 1750, img: "img/eaa9.jpg", desc: ["Recovery", "Strength", "Energy"] },
+      { name: "EAA 10", price: 1850, img: "img/eaa10.jpg", desc: ["Fast acting", "Endurance", "Muscle support"] },
+      { name: "EAA 11", price: 1950, img: "img/eaa11.jpg", desc: ["Energy", "Strength", "Recovery"] },
+      { name: "EAA 12", price: 2050, img: "img/eaa12.jpg", desc: ["Muscle support", "Pump", "Premium"] },
+      { name: "EAA 13", price: 2150, img: "img/eaa13.jpg", desc: ["Recovery", "Focus", "Energy"] },
+      { name: "EAA 14", price: 2250, img: "img/eaa14.jpg", desc: ["Endurance", "Strength", "Pump"] },
+      { name: "EAA 15", price: 2350, img: "img/eaa15.jpg", desc: ["Muscle growth", "Premium", "Energy"] },
+      { name: "EAA 16", price: 2450, img: "img/eaa16.jpg", desc: ["Strength", "Recovery", "Focus"] },
+      { name: "EAA 17", price: 2550, img: "img/eaa17.jpg", desc: ["Fast absorption", "Energy", "Pump"] },
+      { name: "EAA 18", price: 2650, img: "img/eaa18.jpg", desc: ["Muscle support", "Strength", "Recovery"] },
+      { name: "EAA 19", price: 2750, img: "img/eaa19.jpg", desc: ["Endurance", "Energy boost", "Premium"] },
+      { name: "EAA 20", price: 2850, img: "img/eaa20.jpg", desc: ["Muscle growth", "Strength", "Focus"] }
+    ];
+
+    const grid = document.getElementById("grid");
+    products.forEach((p, i) => {
+      const div = document.createElement("div");
+      div.className = "product-card";
+      div.innerHTML = `<img src="${p.img}" alt="${p.name}"><h4>${p.name}</h4><p>₹${p.price}</p>`;
+      div.onclick = () => showDetail(i);
+      grid.appendChild(div);
+    });
+
+    let currentProduct = null;
+    function showDetail(i) {
+      currentProduct = products[i];
+      document.getElementById("pimg").src = currentProduct.img;
+      document.getElementById("pname").innerText = currentProduct.name;
+      document.getElementById("pprice").innerText = "₹" + currentProduct.price;
+      const ul = document.getElementById("pdesc");
+      ul.innerHTML = "";
+      currentProduct.desc.forEach(d => { const li = document.createElement("li"); li.innerText = d; ul.appendChild(li); });
+      grid.style.display = "none";
+      document.getElementById("detail").style.display = "block";
+    }
+    function backToGrid() { document.getElementById("detail").style.display = "none"; grid.style.display = "grid"; }
+    function showOrder() {
+      document.getElementById("oimg").src = currentProduct.img;
+      document.getElementById("oname").innerText = currentProduct.name;
+      document.getElementById("oprice").innerText = "₹" + currentProduct.price;
+      document.getElementById("detail").style.display = "none";
+      document.getElementById("order").style.display = "block";
+    }
+    function backToDetail() { document.getElementById("order").style.display = "none"; document.getElementById("detail").style.display = "block"; }
+    function orderNow() {
+      const name = encodeURIComponent(document.getElementById("name").value.trim());
+      const phone = encodeURIComponent(document.getElementById("phone").value.trim());
+      const email = encodeURIComponent(document.getElementById("email").value.trim());
+      if (!name || !phone || !email) { alert("Please fill all fields!"); return; }
+      const msg = `Order:%0AProduct: ${encodeURIComponent(currentProduct.name)}%0APrice: ₹${currentProduct.price}%0AName: ${name}%0APhone: ${phone}%0AEmail: ${email}`;
+      window.open(`https://api.whatsapp.com/send?phone=917339563621&text=${msg}`, "_blank");
+    }
+  </script>
+</body>
+
+</html>

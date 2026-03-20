@@ -1,0 +1,116 @@
+/* General body & font */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
+    color: white;
+    text-align: center;
+}
+
+/* Navbar */
+.navbar {
+    background: #111;
+    padding: 15px;
+}
+
+/* Category & Product Grid */
+.list,
+.grid {
+    display: grid;
+    gap: 20px;
+    padding: 40px 20px;
+}
+
+/* Category Buttons on index.html */
+.list {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.list button {
+    padding: 20px;
+    background: #ff6600;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.list button:hover {
+    background: #00c853;
+}
+
+/* Product Cards */
+.grid {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.product-card {
+    background: #1a1a1a;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.product-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Product Details & Order Form */
+.product-detail {
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    margin: 20px auto;
+}
+
+.product-detail img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.product-detail button {
+    background: #ff6600;
+    border: none;
+    padding: 10px;
+    color: white;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.product-detail button:hover {
+    background: #00c853;
+}
+
+.product-detail input {
+    width: 90%;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+}
+
+/* Back Button */
+.back-btn {
+    margin: 20px;
+    padding: 10px 15px;
+    background: #ff6600;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background: #00c853;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    /* mobile layout styles */
+}
